@@ -6,25 +6,23 @@ Author: Carlos Andres Sierra <cavirguezs@udistrital.edu.co>
 """
 
 
+from typing import Any
+from abc import ABC
+
 class Engine:
     """This class represents the behaviour of a vehicle motor"""
 
     def __init__(
-        self, name_engine: str, type_engine: str, potency_engine: int, weight: float
+        self, engine_name: str, stability_engine: str, power_engine: int, weight: float, dimensions_engine: int, torque: float, maxSpeed: float
     ):
-        self.__name = name_engine
-        self.__type_ = type_engine
-        self.__potency = potency_engine
+        self.__name = engine_name
+        self.__stability = stability_engine
+        self.__dimensions = dimensions_engine
+        self.__power = power_engine
         self.__weight = weight
-
-    def get_potency(self) -> int:
-        """
-        This method returns the potency of the engine.
-
-        Returns:
-        - int: potency of the engine
-        """
-        return self.__potency
+        self.__torque = torque
+        self.__maxSpeed = maxSpeed
+        
 
     def get_weight(self) -> int:
         """
@@ -35,20 +33,22 @@ class Engine:
         """
         return self.__weight
 
-    def __str__(self):
-        return f"Name: {self.__name}    Type: {self.__type_}    \
-            Potency: {self.__potency}    Weight: {self.__weight}"
+    def __str__(self) -> str:
+        return f"Stability: {self.__stability} Dimensions: {self.__dimensions} Power: {self.__power}\
+                Weight: {self.__weight} Torque: {self.__torque} MaxSpeed: {self.__maxSpeed}"
 
 
-class Vehicle:  # pylint: disable=too-few-public-methods
-    """This class is an abstraction of any vehicle"""
+class Car:  # pylint: disable=too-few-public-methods
+    """This class is an abstraction of any car"""
 
-    def __init__(self, engine: Engine, chassis: str, model: str, year_car: int):
+    def __init__(self, engine: Engine, transmission: str, model: str, year_car: int, trade: str, combustible_type: str, chassis: str):
         self.__engine = engine
-        self.__chasis = chassis
+        self.__transmission = transmission
         self.__model = model
         self.__year = year_car
-        self.__consumption = self.__calculate_gas_consupmtion()
+        self.__trade = trade
+        self.__combustibleType = combustible_type
+        self.__chassis = chassis
 
     def get_engine(self) -> Engine:
         """
@@ -68,7 +68,35 @@ class Vehicle:  # pylint: disable=too-few-public-methods
         """
         return self.__year
 
-    def __calculate_gas_consupmtion(self) -> float:
+    
+
+    def __str__(self):
+        return f"Model: {self.__model}    Year: {self.__year}   Chassis: {self.__chassis}\
+                Engine: {str(self.__engine)}    Transmission: {str(self.__transmission)}\
+                Trade: {str(self.__trade)}  combustible Type:{str(self.__combustibleType)}"
+
+
+
+
+class Truck:  # pylint: disable=too-few-public-methods
+    """This class represents the behavior of a Truck vehicle"""
+    def __init__(self, engine: Engine, model: str, year_truck: int, chassis: str):
+        self.__engine = engine
+        self.__model = model
+        self.__year = year_truck
+        self.__consumption = self.__calculate_gas_consumption()
+        self.__chassis = chassis
+    
+    def get_engine(self) -> Engine:
+        """
+        This method returns the engine of the vehicle.
+
+        Returns:
+        - Engine: engine of the vehicle
+        """
+        return self.__engine
+    
+    def __calculate_gas_consumption(self) -> float:
         """
         This method calculates consumption based on engine
         values.
@@ -79,29 +107,72 @@ class Vehicle:  # pylint: disable=too-few-public-methods
         consumption = (
             (1.1 * self.__engine.get_potency())
             + (0.2 * self.__engine.weight)
-            + (0.3 if self.__chasis == "A" else 0.5)
+            + (0.3 if self.__chassis == "A" else 0.5)
         )
         return consumption
-
-    def __str__(self):
+    
+    def __str__(self) -> str:
         return f"Model: {self.__model}    Year: {self.__year}    Consumption: {self.__consumption}\
-                Chassis: {self.__chasis}    Engine: {str(self.__engine)}"
-
-
-class Car(Vehicle):  # pylint: disable=too-few-public-methods
-    """This class represents the behevior of a Car vehicle"""
-
-
-class Truck(Vehicle):  # pylint: disable=too-few-public-methods
-    """This class represents the behavior of a Truck vehicle"""
-
-
-class Yatch(Vehicle):  # pylint: disable=too-few-public-methods
+                Chassis: {self.__chassis}    Engine: {str(self.__engine)}"
+class Yatch:  # pylint: disable=too-few-public-methods
     """This class represents the behavior of a Yatch vehicle"""
+    def __init__(self, length: float, weight: float, year_yatch: int, trade: str, model: str, engine: Engine):
+        self.length = length
+        self.weight = weight
+        self.year = year_yatch
+        self.trade = trade
+        self.model = model
+        self.engine = engine
 
-
-class Motorcycle(Vehicle):  # pylint: disable=too-few-public-methods
+class Motorcycle:  # pylint: disable=too-few-public-methods
     """This class represents the behavior of a Motorcycle vehicle"""
+    def __init__(self, engine: Engine, model: str, year_motorcycle: int, chassis: str):
+        self.__engine = engine
+        self.__model = model
+        self.__year = year_motorcycle
+        self.__chassis = chassis
+
+    def get_engine(self) -> Engine:
+        """
+        This method returns the engine of the motorcycle.
+        """
+        return self.__engine
+    
+    def __str__(self) -> str:
+        return f"Model: {self.__model}    Year: {self.__year}    Chassis: {self.__chassis}\
+                Engine: {str(self.__engine)}"
+    
+
+class Helicopter:
+
+    def __init__(self, engine: Engine, capacity: int, helicopter_type: str):
+        self.__engine = engine
+        self.__capacity = capacity
+        self.__type = helicopter_type
+
+    def get_engine(self):
+        """
+        This method returns the engine of the helicopter.
+        """
+        return self.__engine
+    def __str__(self) -> str:
+        return f"Capacity: {self.__capacity}    Type: {self.__type}    engine: {str(self.__engine)}"
+
+class Scooter:
+
+    def __init__(self, engine: Engine, capacityWeight: float):
+        self.__engine = engine
+        self.__capacityWeight = capacityWeight
+    
+    def get_engine(self):
+        """
+        This method returns the engine of the scooter.
+        """
+        return self.__engine
+    
+    def __str__(self) -> str:
+        return f"Capacity: {self.__capacityWeight}    engine: {str(self.__engine)}"
+
 
 
 # ==================================== MENU
@@ -125,13 +196,9 @@ vehicles = []
 
 def create_engine():
     """This method lets add a new engine to list"""
-    name_engine = input("Write engine name: ")
-    type_engine = input("Write type of the engine: ")
-    potency_engine = int(input("Write the potency of the engine: "))
-    weight_engine = float(input("Write the weight of the engine: "))
-    new_obj_engine = Engine(name_engine, type_engine, potency_engine, weight_engine)
-    engines[name_engine] = new_obj_engine
-
+    
+    new_obj_engine = Engine("Engine 1", "good", 300, 450.5 ,600, 480.6, 186.9)
+    engines["Engine 1"] = new_obj_engine
 
 def create_vehicle(type_vehicle: str):
     """
@@ -151,6 +218,8 @@ def create_vehicle(type_vehicle: str):
     if year_ < 2000:
         raise ValueError("Error. Year is not in a valid range.")
     engine_name = input("Write the name of the motor for the vehicle: ")
+
+    transmission = input("Write the transmission of the car"")
 
     try:
         engine = engines[engine_name]
