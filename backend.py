@@ -219,7 +219,7 @@ def create_vehicle(type_vehicle: str):
         raise ValueError("Error. Year is not in a valid range.")
     engine_name = input("Write the name of the motor for the vehicle: ")
 
-    transmission = input("Write the transmission of the car"")
+    transmission = input("Write the transmission of the car")
 
     try:
         engine = engines[engine_name]
